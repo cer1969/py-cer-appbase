@@ -4,7 +4,6 @@
 from __future__ import division
 import wx, os
 import wx.lib.agw.flatnotebook as fnb
-
 from cer.widgets import cw
 
 #-----------------------------------------------------------------------------------------
@@ -23,6 +22,11 @@ mbd = cw.MenuBar(
     cw.Menu(u"Ayuda",    cmd_about)
 )
 
+# Toolbar
+tbd = cw.ToolBar(None, (16,16), 
+    None, cmd_open, cmd_save, cmd_saveas, None, cmd_about, None, cmd_quit
+)
+
 #-----------------------------------------------------------------------------------------
 
 NB_STYLE = (fnb.FNB_VC8 | fnb.FNB_TABS_BORDER_SIMPLE | fnb.FNB_DROPDOWN_TABS_LIST |
@@ -37,6 +41,7 @@ class MainFrame(wx.Frame):
         wx.Frame.__init__(self, None, -1, title, size=size)
         
         self.SetMenuBar(mbd.Make())
+        self.SetToolBar(tbd.Make(self))
         self.CreateStatusBar(2)
         self.SetIcon(cerapp.resman.Icon("taoEd_ico"))
         
@@ -46,7 +51,7 @@ class MainFrame(wx.Frame):
         self.Bind(fnb.EVT_FLATNOTEBOOK_PAGE_CLOSING, self.OnPageClosing, self.nb)
         self.Bind(fnb.EVT_FLATNOTEBOOK_PAGE_CLOSED,  self.OnPageClosed, self.nb)
         
-        self.UpdateMenu()
+        #self.UpdateMenu()
         
         cmd.Bind(self)
         self.Bind(wx.EVT_CLOSE,self.OnCloseWindow)
@@ -61,42 +66,45 @@ class MainFrame(wx.Frame):
         
     def OnOpen(self,event=None):
         filename = wx.FileSelector(message="Abrir archivo...", default_path=os.getcwd(),
-            wildcard="Pad file (*.zpk)|*.zpk", flags=wx.OPEN|wx.CHANGE_DIR, parent=self
+            wildcard="Todos (*.*)|*.*", flags=wx.OPEN|wx.CHANGE_DIR, parent=self
         )
         if filename == "":
             return
-        n = self.nb.GetPageCount()
-        pages = (self.nb.GetPage(i) for i in range(n))
-        files = (x.filename for x in pages)
+        wx.MessageBox(u"Seleccionado: %s" % filename, caption="Abrir Archivo", style=wx.ICON_INFORMATION)
+        #n = self.nb.GetPageCount()
+        #pages = (self.nb.GetPage(i) for i in range(n))
+        #files = (x.filename for x in pages)
         
-        if filename in files:
-            wx.MessageBox(u"El archivo ya está abierto", caption="Abrir Archivo", style=wx.OK)
-            return
+        #if filename in files:
+        #    wx.MessageBox(u"El archivo ya está abierto", caption="Abrir Archivo", style=wx.OK)
+        #    return
         
-        try:
-            page = Page(self.nb, filename)
-            self.nb.AddPage(page, page.GetPageName(), True)
-            self.UpdateMenu()
-        except ValueError:
-            wx.MessageBox(u"Formato de archivo incorrecto", caption="Abrir Archivo", style=wx.ICON_ERROR)
-            return
+        #try:
+        #    page = Page(self.nb, filename)
+        #    self.nb.AddPage(page, page.GetPageName(), True)
+        #    self.UpdateMenu()
+        #except ValueError:
+        #    wx.MessageBox(u"Formato de archivo incorrecto", caption="Abrir Archivo", style=wx.ICON_ERROR)
+        #    return
     
     def OnSave(self,event=None):
-        page = self.nb.GetPage(self.nb.GetSelection())
-        page.Save()
+        wx.MessageBox(u"Grabar", caption="Grabar Archivo", style=wx.ICON_INFORMATION)
+        #page = self.nb.GetPage(self.nb.GetSelection())
+        #page.Save()
     
     def OnSaveAs(self,event=None):
         filename = wx.FileSelector(message="Abrir archivo...", default_path=os.getcwd(),
-            wildcard="Pad file (*.zpk)|*.zpk", flags=wx.SAVE|wx.CHANGE_DIR|wx.OVERWRITE_PROMPT,
+            wildcard="Todos (*.*)|*.*", flags=wx.SAVE|wx.CHANGE_DIR|wx.OVERWRITE_PROMPT,
             parent=self
         )
         if filename == "":
             return
-        pos = self.nb.GetSelection()
-        page = self.nb.GetPage(pos)
-        page.Save(filename)
-        self.nb.SetPageText(pos, page.GetPageName())
-        self.UpdateTitle()
+        wx.MessageBox(u"Grabar como: %s" % filename, caption="Grabar Archivo", style=wx.ICON_INFORMATION)
+        #pos = self.nb.GetSelection()
+        #page = self.nb.GetPage(pos)
+        #page.Save(filename)
+        #self.nb.SetPageText(pos, page.GetPageName())
+        #self.UpdateTitle()
     
     def UpdateTitle(self):
         info = cerapp.info
