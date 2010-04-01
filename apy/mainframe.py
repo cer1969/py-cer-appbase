@@ -35,7 +35,7 @@ NB_STYLE = (fnb.FNB_VC8 | fnb.FNB_TABS_BORDER_SIMPLE | fnb.FNB_DROPDOWN_TABS_LIS
 class MainFrame(wx.Frame):
     def __init__(self):
         
-        title = "%s %s" % (cerapp.info.name, cerapp.info.version)
+        title = "%s %s" % (cerapp.name, cerapp.version)
         size = (cerapp.ini.app_width, cerapp.ini.app_height)
         
         wx.Frame.__init__(self, None, -1, title, size=size)
@@ -107,9 +107,8 @@ class MainFrame(wx.Frame):
         #self.UpdateTitle()
     
     def UpdateTitle(self):
-        info = cerapp.info
         page = self.nb.GetPage(self.nb.GetSelection())
-        title = "%s %s - %s" % (info.name, info.version, page.filename)
+        title = "%s %s - %s" % (cerapp.name, cerapp.version, cerapp.filename)
         self.SetTitle(title)
         
     def OnPageChanged(self, event):
@@ -124,7 +123,7 @@ class MainFrame(wx.Frame):
     def OnPageClosed(self, event):
         n = self.nb.GetPageCount()
         if n == 0:
-            title = "%s %s" % (cerapp.info.name, cerapp.info.version)
+            title = "%s %s" % (cerapp.name, cerapp.version)
             self.SetTitle(title)
             self.UpdateMenu()
         event.Skip()
@@ -134,8 +133,8 @@ class MainFrame(wx.Frame):
     # Generales
     
     def OnAbout(self, event):
-        title    = "Acerca de %s" % cerapp.info.name
-        bigText  = " %s - %s (R)" % (cerapp.info.name, cerapp.info.version)
+        title    = "Acerca de %s" % cerapp.name
+        bigText  = " %s - %s (R)" % (cerapp.name, cerapp.version)
         longText = (
             u'\n CRISTIAN ECHEVERRÍA RABÍ\n' 
             u' Punto de partida para nuevas aplicaciones\n'
@@ -143,7 +142,7 @@ class MainFrame(wx.Frame):
         cw.about(self, title, bigText, longText, (350,150), cerapp.resman.Bitmap("logo"))
     
     #def OnManual(self, event):
-    #    os.startfile(cerapp.info.man_path)
+    #    os.startfile(cerapp.man_path)
     
     def OnCloseWindow(self, event=None):
         self.Destroy()
