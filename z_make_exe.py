@@ -11,7 +11,8 @@ from apy.config import app
 bundle_files = 3
 
 data_files = [
-    ("data", glob.glob("data/*.*"))
+    #("data", glob.glob("data/*.*"))
+    (".", glob.glob("*.ini"))
 ]
 
 #-----------------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ data_files = [
 # Path to vc++ runtime redist manifest & dlls 
 dlls26path = r"C:\Documents and Settings\cecheverria\Mis documentos\030_Devel\Lib\py26"
 dlls26list =  glob.glob(os.path.join(dlls26path, "*.*"))
+
 
 if sys.version_info[:2] >= (2,6):
     

@@ -23,7 +23,7 @@ app.resman = rxfile.resman
 
 _x, _y, _w, _h = wx.GetClientDisplayRect()
 
-ini = AppIni(app.toAppDir("data/%s.ini" % name))
+ini = AppIni(app.toAppDir("%s.ini" % name))
 ini.addSection("app")
 ini.addInt("app.width",  900, vmin=600, vmax=_w)
 ini.addInt("app.height", 700, vmin=400, vmax=_h)
